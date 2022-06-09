@@ -3,6 +3,7 @@ import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfil
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../Firebase.init';
+import Loading from './Loading';
 
 const Register = () => {
      const {
@@ -23,7 +24,7 @@ const Register = () => {
      const [updateProfile, updating, uError] = useUpdateProfile(auth);
 
      if (loading || gLoading || updating) {
-       return <p>Loading....</p>;
+       return <Loading/>;
      }
 
      if (user || gUser) {

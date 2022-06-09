@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useParams } from "react-router-dom";
+import { AiFillEdit } from "react-icons/ai";
+import { MdDeleteForever } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
 import auth from "../Firebase.init";
 
 const Notes = () => {
+  const navigate=useNavigate()
   const { id } = useParams();
   const [user] = useAuthState(auth);
   const [names, setNames] = useState({});
   const [notes, setNotes] = useState([]);
-
   useEffect(() => {
     fetch(`http://localhost:5000/collection/${id}`)
       .then((res) => res.json())
@@ -40,7 +42,11 @@ const Notes = () => {
       body: JSON.stringify(note),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        if(data.insertedId){
+          e.target.reset()
+        }
+      });
   };
 
   const handleDelete = (id) => {
@@ -58,13 +64,31 @@ const Notes = () => {
       });
   };
 
+  const handleUpdate=(id)=>{
+    navigate(`/update/${id}`)
+    console.log(id);
+  }
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="task" placeholder="Add anew task" />
-        <input type="submit" value="Add" />
-      </form>
-
+      <div className="border rounded-xl w-1/2 mx-auto my-10 py-4">
+        <h1 className="text-center text-3xl font-bold text-blue-400">
+          Add a new Task
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            className="w-10/12 mx-auto block rounded-xl px-2 py-1 my-2 border"
+            type="text"
+            name="task"
+            placeholder="Add a new task"
+          />
+          <input
+            className="btn btn-outline btn-sm block mx-auto"
+            type="submit"
+            value="Add"
+          />
+        </form>
+      </div>
       <div>
         <div class="overflow-x-auto">
           <table class="table w-full">
@@ -81,31 +105,18 @@ const Notes = () => {
                 <tr key={note._id}>
                   <th>{index + 1}</th>
                   <td>{note.task}</td>
-                  <td>
-                    <label for="my-modal-3" class="btn modal-button">
-                      Edit
-                    </label>
-
-                    <input
-                      type="checkbox"
-                      id="my-modal-3"
-                      class="modal-toggle"
-                    />
-                    <div class="modal">
-                      <div class="modal-box relative">
-                        <label
-                          for="my-modal-3"
-                          class="btn btn-sm btn-circle absolute right-2 top-2"
-                        >
-                          ✕
-                        </label>
-                        <form >
-                            <input type="text" name="noteUpdate" defaultValue={note.task} />
-                        </form>
-                      </div>
-                    </div>
+                  <td
+                    className="cursor-pointer text-3xl text-blue-500"
+                    onClick={() => handleUpdate(note._id)}
+                  >
+                    <AiFillEdit />
                   </td>
-                  <td onClick={() => handleDelete(note._id)}>Delete</td>
+                  <td
+                    className="cursor-pointer text-3xl text-red-600"
+                    onClick={() => handleDelete(note._id)}
+                  >
+                    <MdDeleteForever />
+                  </td>
                 </tr>
               ))}
             </tbody>

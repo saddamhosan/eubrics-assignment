@@ -3,6 +3,7 @@ import { useSendPasswordResetEmail, useSignInWithEmailAndPassword, useSignInWith
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../Firebase.init';
+import Loading from './Loading';
 
 const Login = () => {
     const location = useLocation();
@@ -32,7 +33,7 @@ const Login = () => {
     }, [from, navigate, user, gUser]);
 
     if (loading || gLoading || sending) {
-      return <p>Loading....</p>;
+      return <Loading/>;
     }
 
     const onSubmit = (data) => {
