@@ -3,6 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { AiFillEdit } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import auth from "../Firebase.init";
 
 const Notes = () => {
@@ -44,12 +45,29 @@ const Notes = () => {
       .then((res) => res.json())
       .then((data) => {
         if(data.insertedId){
+          Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Successfully added a new task ",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           e.target.reset()
         }
       });
   };
 
   const handleDelete = (id) => {
+Swal.fire({
+  title: "Are you sure?",
+  text: "You won't Delete this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!",
+}).then((result) => {
+  if (result.isConfirmed) {
     fetch(`https://safe-basin-76577.herokuapp.com/note/${id}`, {
       method: "delete",
       headers: {
@@ -59,9 +77,13 @@ const Notes = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.deletedCount) {
-          alert("delete Successfully");
+          Swal.fire("Deleted!", "Your task has been deleted.", "success");
         }
       });
+  }
+});
+
+    
   };
 
   const handleUpdate=(id)=>{
