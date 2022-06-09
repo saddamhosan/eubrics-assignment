@@ -5,7 +5,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [collections, setCollections] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/collection")
+    fetch("https://safe-basin-76577.herokuapp.com/collection")
       .then((res) => res.json())
       .then((data) => setCollections(data));
   }, []);

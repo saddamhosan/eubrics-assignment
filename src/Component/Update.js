@@ -6,7 +6,7 @@ const Update = () => {
     const navigate=useNavigate()
     const [updateNote,setUpdateNote]=useState({})
     useEffect(()=>{
-        fetch(`http://localhost:5000/notes/${id}`)
+        fetch(`https://safe-basin-76577.herokuapp.com/notes/${id}`)
           .then((res) => res.json())
           .then((data) => setUpdateNote(data));
     },[id])
@@ -15,7 +15,7 @@ const Update = () => {
 e.preventDefault()
 const task=e.target.note.value
 console.log(task);
-fetch(`http://localhost:5000/notes/${id}`,{
+fetch(`https://safe-basin-76577.herokuapp.com/notes/${id}`,{
     method:'put',
     headers:{
         'content-type':'application/json',

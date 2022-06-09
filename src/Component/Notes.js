@@ -12,7 +12,7 @@ const Notes = () => {
   const [names, setNames] = useState({});
   const [notes, setNotes] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:5000/collection/${id}`)
+    fetch(`https://safe-basin-76577.herokuapp.com/collection/${id}`)
       .then((res) => res.json())
       .then((data) => setNames(data));
   }, [id]);
@@ -21,7 +21,7 @@ const Notes = () => {
   const email = user?.email;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/note?name=${name}&email=${email}`)
+    fetch(`https://safe-basin-76577.herokuapp.com/note?name=${name}&email=${email}`)
       .then((res) => res.json())
       .then((data) => setNotes(data));
   }, [email, name, notes]);
@@ -34,7 +34,7 @@ const Notes = () => {
       email,
       task,
     };
-    fetch("http://localhost:5000/note", {
+    fetch("https://safe-basin-76577.herokuapp.com/note", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -50,7 +50,7 @@ const Notes = () => {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/note/${id}`, {
+    fetch(`https://safe-basin-76577.herokuapp.com/note/${id}`, {
       method: "delete",
       headers: {
         "content-type": "application/json",
