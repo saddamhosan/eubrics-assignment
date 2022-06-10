@@ -9,7 +9,12 @@ const Update = () => {
     const navigate=useNavigate()
     const [updateNote,setUpdateNote]=useState({})
     useEffect(()=>{
-        fetch(`https://safe-basin-76577.herokuapp.com/notes/${id}`)
+        fetch(`https://safe-basin-76577.herokuapp.com/notes/${id}`, {
+          method: "get",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("Token")}`,
+          },
+        })
           .then((res) => res.json())
           .then((data) => setUpdateNote(data));
     },[id])
@@ -18,24 +23,27 @@ const Update = () => {
 e.preventDefault()
 const task=e.target.note.value
 console.log(task);
-fetch(`https://safe-basin-76577.herokuapp.com/notes/${id}`,{
-    method:'put',
-    headers:{
-        'content-type':'application/json',
-    },
-    body:JSON.stringify({task})
-}).then(res=>res.json()).then(data=>{
-    if (data.modifiedCount) {
-        Swal.fire({
-          position: "top-center",
-          icon: "success",
-          title: "Your task successfully update",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(window.history.go(-1));
-    }
+fetch(`https://safe-basin-76577.herokuapp.com/notes/${id}`, {
+  method: "put",
+  headers: {
+    "content-type": "application/json",
+    authorization: `Bearer ${localStorage.getItem("Token")}`,
+  },
+  body: JSON.stringify({ task }),
 })
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.modifiedCount) {
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Your task successfully update",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate(window.history.go(-1));
+    }
+  });
     }
     return (
       <div className="border rounded-xl w-1/2 mx-auto my-10 py-4">

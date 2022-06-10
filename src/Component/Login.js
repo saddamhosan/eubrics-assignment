@@ -3,6 +3,7 @@ import { useSendPasswordResetEmail, useSignInWithEmailAndPassword, useSignInWith
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../Firebase.init';
+import useToken from '../hook/useToken';
 import Loading from './Loading';
 
 const Login = () => {
@@ -25,19 +26,21 @@ const Login = () => {
 
     const [sendPasswordResetEmail, sending, pResetError] =
       useSendPasswordResetEmail(auth);
-
+const [token] = useToken(user || gUser);
     useEffect(() => {
-      if (user || gUser) {
+      if (token) {
         navigate(from, { replace: true });
       }
-    }, [from, navigate, user, gUser]);
+    }, [token,from,navigate]);
 
     if (loading || gLoading || sending) {
       return <Loading/>;
     }
 
     const onSubmit = (data) => {
-      signInWithEmailAndPassword(data.email, data.password);
+      const {email,password}=data
+     signInWithEmailAndPassword(email, password);
+     
     };
     return (
       <div className="md:w-1/2 mx-auto shadow-xl p-10 my-10 rounded-xl font-serif">

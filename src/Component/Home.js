@@ -5,7 +5,12 @@ const Home = () => {
   const navigate = useNavigate();
   const [collections, setCollections] = useState([]);
   useEffect(() => {
-    fetch("https://safe-basin-76577.herokuapp.com/collection")
+    fetch("https://safe-basin-76577.herokuapp.com/collection", {
+      method: "get",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setCollections(data));
   }, []);
@@ -15,9 +20,9 @@ const Home = () => {
         <div
           onClick={() => navigate(`/notes/${collection._id}`)}
           key={collection._id}
-          class="card  bg-base-100 shadow-xl hover:text-blue-900 text-blue-500"
+          className="card  bg-base-100 shadow-xl hover:text-blue-900 text-blue-500"
         >
-          <div class="card-body">
+          <div className="card-body">
             <p className="text-2xl font-bold text-center font-serif ">
               {collection.name}
             </p>

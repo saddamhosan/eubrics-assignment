@@ -13,7 +13,12 @@ const Notes = () => {
   const [names, setNames] = useState({});
   const [notes, setNotes] = useState([]);
   useEffect(() => {
-    fetch(`https://safe-basin-76577.herokuapp.com/collection/${id}`)
+    fetch(`https://safe-basin-76577.herokuapp.com/collection/${id}`,{
+      method: "get",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setNames(data));
   }, [id]);
@@ -22,7 +27,15 @@ const Notes = () => {
   const email = user?.email;
 
   useEffect(() => {
-    fetch(`https://safe-basin-76577.herokuapp.com/note?name=${name}&email=${email}`)
+    fetch(
+      `https://safe-basin-76577.herokuapp.com/note?name=${name}&email=${email}`,
+      {
+        method: "get",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("Token")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => setNotes(data));
   }, [email, name, notes]);
@@ -39,12 +52,13 @@ const Notes = () => {
       method: "post",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("Token")}`,
       },
       body: JSON.stringify(note),
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.insertedId){
+        if (data.insertedId) {
           Swal.fire({
             position: "top-center",
             icon: "success",
@@ -52,7 +66,7 @@ const Notes = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          e.target.reset()
+          e.target.reset();
         }
       });
   };
@@ -72,6 +86,7 @@ Swal.fire({
       method: "delete",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("Token")}`,
       },
     })
       .then((res) => res.json())
@@ -112,8 +127,8 @@ Swal.fire({
         </form>
       </div>
       <div>
-        <div class="overflow-x-auto">
-          <table class="table w-full">
+        <div className="overflow-x-auto">
+          <table className="table w-full">
             <thead>
               <tr>
                 <th>No.</th>
