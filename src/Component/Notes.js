@@ -74,7 +74,6 @@ const Notes = () => {
   const handleDelete = (id) => {
 Swal.fire({
   title: "Are you sure?",
-  text: "You won't Delete this!",
   icon: "warning",
   showCancelButton: true,
   confirmButtonColor: "#3085d6",
@@ -111,7 +110,7 @@ Swal.fire({
       <h1 className="text-center text-3xl font-bold text-blue-800 mt-10">
         {name}
       </h1>
-      <div className="border rounded-xl w-1/2 mx-auto my-10 py-4">
+      <div className="border rounded-xl md:w-1/2 mx-auto my-10 py-4">
         <h1 className="text-center text-2xl font-bold text-blue-400">
           Add a new Task
         </h1>
